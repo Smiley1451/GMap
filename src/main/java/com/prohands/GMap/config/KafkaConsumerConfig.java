@@ -17,7 +17,7 @@ public class KafkaConsumerConfig {
     public ReceiverOptions<String, LocationEvent> kafkaReceiverOptions(
             KafkaProperties kafkaProperties) {
         ReceiverOptions<String, LocationEvent> basicReceiverOptions =
-                ReceiverOptions.create(kafkaProperties.buildConsumerProperties());
+                ReceiverOptions.create(kafkaProperties.buildConsumerProperties()); // Method exists in Spring Boot 3.x
         return basicReceiverOptions.subscription(Collections.singleton("location-updates"));
     }
 

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "name": "Place 1",
+    "attrs": "{}",
+    "geom": "Point(1 1)"
+  },
+  {
+    "id": "2",
+    "name": "Place 2",
+    "attrs": "{}",
+    "geom": "Point(2 2)"
+  },
+  {
+    "id": "3",
+    "name": "Place 3",
+    "attrs": "{}",
+    "geom": "Point(3 3)"
+  }
+]
