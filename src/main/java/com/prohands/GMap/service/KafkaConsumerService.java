@@ -1,14 +1,14 @@
 package com.prohands.GMap.service;
 
-import com.prohands.GMap.model.*;
-import com.prohands.GMap.repository.*;
-import org.springframework.data.geo.Point;
+import com.prohands.GMap.model.LocationEvent;
+import com.prohands.GMap.model.VehicleLocation;
+import com.prohands.GMap.repository.VehicleLocationRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
-import jakarta.annotation.PostConstruct;
+import java.time.Instant;
 
 @Service
 public class KafkaConsumerService {
@@ -31,14 +31,23 @@ public class KafkaConsumerService {
         reactiveKafkaConsumerTemplate
                 .receive()
                 .flatMap(record -> {
-                    LocationEvent locationEvent = record.value();
-                    VehicleLocation vehicleLocation = new VehicleLocation();
-                    vehicleLocation.setEntityId(locationEvent.entityId());
-                    vehicleLocation.setLat(locationEvent.lat());
-                    vehicleLocation.setLng(locationEvent.lng());
-                    vehicleLocation.setLocation(new Point(locationEvent.lng(), locationEvent.lat()));
+                    LocationEvent event = record.value();
+
+                    // 1. Create PostGIS WKT String: "POINT(lng lat)"
+                    String wktGeom = String.format("POINT(%f %f)", event.lng(), event.lat());
+
+                    // 2. Create NEW Record (Records are immutable, no setters)
+                    VehicleLocation vehicleLocation = new VehicleLocation(
+                            null,               // ID (let DB generate it)
+                            event.entityId(),   // Entity ID
+                            wktGeom,           // Geom String
+                            event.speed(),      // Speed
+                            event.bearing(),    // Bearing
+                            Instant.now()       // Updated At
+                    );
+
                     return vehicleLocationRepository.save(vehicleLocation)
-                            .thenReturn(locationEvent);
+                            .thenReturn(event);
                 })
                 .doOnNext(locationEventSink::tryEmitNext)
                 .subscribe();

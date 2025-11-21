@@ -66,7 +66,15 @@ public class GeoServiceImpl implements GeoService {
     @Override
     public Mono<LocationEvent> getLocation(String entityId) {
         return vehicleLocationRepository.findLastKnownLocation(entityId)
-                .map(vehicleLocation -> new LocationEvent(vehicleLocation.getEntityId(), vehicleLocation.getLat(), vehicleLocation.getLng()));
+                // FIX: Use .entityId(), .lat(), .lng() (No 'get' prefix)
+                .map(vl -> new LocationEvent(
+                        vl.entityId(),
+                        vl.lat(),
+                        vl.lng(),
+                        vl.speed(),
+                        vl.bearing(),
+                        vl.updatedAt()
+                ));
     }
 
     private record PlaceWithDistance(Place place, double distance) {}

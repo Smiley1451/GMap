@@ -1,18 +1,18 @@
 [
   {
-    "id": "1",
+    "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
     "name": "Place 1",
     "attrs": "{}",
     "geom": "Point(1 1)"
   },
   {
-    "id": "2",
+    "id": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22",
     "name": "Place 2",
     "attrs": "{}",
     "geom": "Point(2 2)"
   },
   {
-    "id": "3",
+    "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a33",
     "name": "Place 3",
     "attrs": "{}",
     "geom": "Point(3 3)"
