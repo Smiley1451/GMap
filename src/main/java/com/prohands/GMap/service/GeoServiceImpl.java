@@ -66,7 +66,7 @@ public class GeoServiceImpl implements GeoService {
     @Override
     public Mono<LocationEvent> getLocation(String entityId) {
         return vehicleLocationRepository.findLastKnownLocation(entityId)
-                // FIX: Use .entityId(), .lat(), .lng() (No 'get' prefix)
+
                 .map(vl -> new LocationEvent(
                         vl.entityId(),
                         vl.lat(),

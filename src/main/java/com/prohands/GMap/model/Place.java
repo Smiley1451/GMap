@@ -10,8 +10,8 @@ import java.util.UUID;
 public record Place(
         @Id UUID id,
         String name,
-        String attrs, // JSONB
-        String geom, // GEOGRAPHY(Point,4326) -> Format: "POINT(longitude latitude)"
+        String attrs,
+        String geom,
         Instant createdAt
 ) {
 

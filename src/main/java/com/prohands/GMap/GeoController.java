@@ -19,8 +19,11 @@ public class GeoController {
     }
 
     @PostMapping("/distance")
-    public Mono<Double> getDistance(@RequestBody LocationEvent from, @RequestBody LocationEvent to) {
-        return geoService.getDistance(from.lat(), from.lng(), to.lat(), to.lng());
+    public Mono<Double> getDistance(@RequestBody DistanceRequest request) {
+        return geoService.getDistance(
+                request.from().lat(), request.from().lng(),
+                request.to().lat(), request.to().lng()
+        );
     }
 
     @PostMapping("/nearest")
@@ -45,7 +48,8 @@ public class GeoController {
 
     @GetMapping("/stream/locations")
     public Flux<LocationEvent> streamLocations() {
-        // This will be handled by the WebSocket handler
+
         return Flux.empty();
     }
+    public record DistanceRequest(LocationEvent from, LocationEvent to) {}
 }

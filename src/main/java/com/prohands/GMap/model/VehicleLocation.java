@@ -10,7 +10,7 @@ import java.util.UUID;
 public record VehicleLocation(
         @Id UUID id,
         String entityId,
-        String geom, // GEOGRAPHY(Point,4326) -> Format: "POINT(longitude latitude)"
+        String geom,
         Double speed,
         Double bearing,
         Instant updatedAt
